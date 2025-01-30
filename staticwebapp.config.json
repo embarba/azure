@@ -1,8 +1,8 @@
-##{
-##  "routes": [
- ##   {
-##      "route": "/*",
- ##     "rewrite": "/mantenimiento.html"
-  ##  }
-##  ]
-##}
+{
+  "routes": [
+    {
+      "route": "/*",
+      "rewrite": "/index.html"
+   }
+  ]
+}
