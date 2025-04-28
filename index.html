@@ -1,51 +1,68 @@
-<script>
-    const storageAccountName = "embarba1990";
-    const containerName = "webstaticembarba";
-    const blobListElement = document.getElementById('blob-list');
-
-    async function loadBlobs() {
-      try {
-        const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, "application/xml");
-        const blobs = xmlDoc.getElementsByTagName('Blob');
-
-        blobListElement.innerHTML = '';
-
-        if (blobs.length === 0) {
-          blobListElement.innerHTML = '<li>No hay ficheros disponibles.</li>';
-          return;
-        }
-
-        for (let blob of blobs) {
-          const name = blob.getElementsByTagName('Name')[0].textContent;
-          const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
-          
-          const li = document.createElement('li');
-          
-          const icon = document.createElement('span');
-          icon.textContent = "📄 ";
-
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.textContent = name;
-          link.target = "_blank";
-
-          li.appendChild(icon);
-          li.appendChild(link);
-          blobListElement.appendChild(li);
-        }
-
-      } catch (error) {
-        console.error('Error al cargar blobs:', error);
-        blobListElement.innerHTML = '<li>Error al cargar los archivos.</li>';
-      }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embarba1990 Izan y Elsa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
     }
-
-    window.onload = loadBlobs;
-</script>
+    header {
+      background: #0078d4;
+      color: white;
+      width: 100%;
+      padding: 1em 0;
+    }
+    header h1 {
+      margin: 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin: 0.5em 0;
+    }
+    ul li a {
+      text-decoration: none;
+      color: #0078d4;
+      font-weight: bold;
+    }
+    .file-list {
+      margin-top: 2em;
+      width: 90%;
+      max-width: 800px;
+    }
+    .file-list h2 {
+      margin-bottom: 1em;
+      color: #0078d4;
+    }
+    .file-list ul {
+      list-style: none;
+      padding: 0;
+    }
+    footer {
+      margin-top: auto;
+      padding: 1em 0;
+      background: #e5e7eb;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Repositorio Embarba1990 (v4)</h1>
+  </header>
+  <main>
+    <h2>Izan y Elsa</
