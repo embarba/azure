@@ -14,8 +14,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      justify-content: flex-start;
+      min-height: 100vh;
       text-align: center;
     }
     header {
@@ -39,6 +39,22 @@
       color: #0078d4;
       font-weight: bold;
     }
+    .file-list {
+      margin-top: 2em;
+      width: 90%;
+      max-width: 800px;
+    }
+    .file-list h2 {
+      margin-bottom: 1em;
+      color: #0078d4;
+    }
+    .file-list ul {
+      list-style: none;
+      padding: 0;
+    }
+    .file-list li {
+      margin: 0.5em 0;
+    }
     footer {
       margin-top: auto;
       padding: 1em 0;
@@ -59,11 +75,26 @@
       <li><a href="https://portal.azure.com/" target="_blank">Go to Azure Portal</a></li>
       <li><a href="https://github.com/" target="_blank">Visit my GitHub</a></li>
       <li><a href="https://embarba1990.file.core.windows.net/repositorio?sp=r&st=2025-01-28T15:21:51Z&se=2025-01-29T15:21:51Z&spr=https&sv=2022-11-02&sig=KVD1aQ4vFNxXG5Fr425MbHRB42t8XJgdlzPeWpgNbYY%3D&sr=s" target="_blank">Mi repo (File Share)</a></li>
-      <li><a href="https://embarba1990.blob.core.windows.net/webstaticembarba" target="_blank">Repositorio de Ficheros (clic aquí)</a></li>
     </ul>
+
+    <div class="file-list">
+      <h2>Repositorio de Ficheros</h2>
+      <ul id="blob-list">
+        <li>Cargando ficheros...</li>
+      </ul>
+    </div>
   </main>
+
   <footer>
     <p>© 2025 My Web App. All rights reserved.</p>
   </footer>
-</body>
-</html>
+
+  <script>
+    // Aquí configuras tu Storage
+    const storageAccountName = "embarba1990";
+    const containerName = "webstaticembarba";
+    const blobListElement = document.getElementById('blob-list');
+
+    async function loadBlobs() {
+      try {
+        const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp
