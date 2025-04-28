@@ -65,4 +65,76 @@
     <h1>Repositorio Embarba1990 (v4)</h1>
   </header>
   <main>
-    <h2>Izan y Elsa</
+    <h2>Izan y Elsa</h2>
+    <p>Esta es una web gratuita en Azure App Service.</p>
+    <ul>
+      <li><a href="https://azure.microsoft.com/" target="_blank">Aprende sobre Azure</a></li>
+      <li><a href="https://portal.azure.com/" target="_blank">Portal de Azure</a></li>
+      <li><a href="https://github.com/" target="_blank">Mi GitHub</a></li>
+      <li><a href="https://embarba1990.file.core.windows.net/repositorio?sp=r&st=2025-01-28T15:21:51Z&se=2025-01-29T15:21:51Z&spr=https&sv=2022-11-02&sig=KVD1aQ4vFNxXG5Fr425MbHRB42t8XJgdlzPeWpgNbYY%3D&sr=s" target="_blank">Mi Repositorio (File Share)</a></li>
+    </ul>
+
+    <div class="file-list">
+      <h2>Repositorio de Ficheros</h2>
+      <ul id="blob-list">
+        <li>Cargando ficheros...</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 My Web App. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const storageAccountName = "embarba1990";
+    const containerName = "webstaticembarba";
+    const blobListElement = document.getElementById('blob-list');
+
+    async function loadBlobs() {
+      try {
+        const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "application/xml");
+        const blobs = xmlDoc.getElementsByTagName('Blob');
+
+        blobListElement.innerHTML = '';
+
+        if (blobs.length === 0) {
+          blobListElement.innerHTML = '<li>No hay ficheros disponibles.</li>';
+          return;
+        }
+
+        for (let blob of blobs) {
+          const name = blob.getElementsByTagName('Name')[0].textContent;
+          const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
+          
+          const li = document.createElement('li');
+          const icon = document.createElement('span');
+          icon.textContent = "📄 ";
+
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.textContent = name;
+          link.target = "_blank";
+
+          li.appendChild(icon);
+          li.appendChild(link);
+          blobListElement.appendChild(li);
+        }
+
+      } catch (error) {
+        console.error('Error al cargar blobs:', error);
+        blobListElement.innerHTML = '<li>Error cargando ficheros. Revisa CORS o configuración del contenedor.</li>';
+      }
+    }
+
+    loadBlobs();
+  </script>
+</body>
+</html>
