@@ -20,11 +20,18 @@
       for (let blob of blobs) {
         const name = blob.getElementsByTagName('Name')[0].textContent;
         const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
+        
         const li = document.createElement('li');
+        
+        const icon = document.createElement('span');
+        icon.textContent = "📄 ";  // Puedes cambiarlo por otro emoji si quieres
+
         const link = document.createElement('a');
         link.href = blobUrl;
         link.textContent = name;
         link.target = "_blank";
+
+        li.appendChild(icon);
         li.appendChild(link);
         blobListElement.appendChild(li);
       }
@@ -39,6 +46,5 @@
     }
   }
 
-  // Llama a la función al cargar la página
   window.onload = loadBlobs;
 </script>
