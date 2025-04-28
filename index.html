@@ -1,50 +1,136 @@
-<script>
-  const storageAccountName = "embarba1990";
-  const containerName = "webstaticembarba";
-  const blobListElement = document.getElementById('blob-list');
-
-  async function loadBlobs() {
-    try {
-      const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const text = await response.text();
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, "application/xml");
-      const blobs = xmlDoc.getElementsByTagName('Blob');
-
-      blobListElement.innerHTML = ''; // Limpia el "Cargando ficheros..."
-
-      for (let blob of blobs) {
-        const name = blob.getElementsByTagName('Name')[0].textContent;
-        const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
-        
-        const li = document.createElement('li');
-        
-        const icon = document.createElement('span');
-        icon.textContent = "📄 ";  // Puedes cambiarlo por otro emoji si quieres
-
-        const link = document.createElement('a');
-        link.href = blobUrl;
-        link.textContent = name;
-        link.target = "_blank";
-
-        li.appendChild(icon);
-        li.appendChild(link);
-        blobListElement.appendChild(li);
-      }
-
-      if (blobs.length === 0) {
-        blobListElement.innerHTML = '<li>No hay ficheros disponibles.</li>';
-      }
-
-    } catch (error) {
-      console.error('Error al cargar blobs:', error);
-      blobListElement.innerHTML = '<li>Error cargando ficheros.</li>';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embarba1990 Izan y Elsa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
     }
-  }
+    header {
+      background: #0078d4;
+      color: white;
+      width: 100%;
+      padding: 1em 0;
+    }
+    header h1 {
+      margin: 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    ul li {
+      margin: 0.5em 0;
+    }
+    ul li a {
+      text-decoration: none;
+      color: #0078d4;
+      font-weight: bold;
+    }
+    .file-list {
+      margin-top: 2em;
+      width: 90%;
+      max-width: 800px;
+    }
+    .file-list h2 {
+      margin-bottom: 1em;
+      color: #0078d4;
+    }
+    .file-list ul {
+      list-style: none;
+      padding: 0;
+    }
+    .file-list li {
+      margin: 0.5em 0;
+    }
+    footer {
+      margin-top: auto;
+      padding: 1em 0;
+      background: #e5e7eb;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Repositorio Embarba1990 (v3)</h1>
+  </header>
+  <main>
+    <h2>Izan y Elsa</h2>
+    <p>This is a free website hosted on Azure App Service.</p>
+    <ul>
+      <li><a href="https://azure.microsoft.com/" target="_blank">Learn about Azure</a></li>
+      <li><a href="https://portal.azure.com/" target="_blank">Go to Azure Portal</a></li>
+      <li><a href="https://github.com/" target="_blank">Visit my GitHub</a></li>
+      <li><a href="https://embarba1990.file.core.windows.net/repositorio?sp=r&st=2025-01-28T15:21:51Z&se=2025-01-29T15:21:51Z&spr=https&sv=2022-11-02&sig=KVD1aQ4vFNxXG5Fr425MbHRB42t8XJgdlzPeWpgNbYY%3D&sr=s" target="_blank">Mi repo (File Share)</a></li>
+    </ul>
 
-  window.onload = loadBlobs;
-</script>
+    <div class="file-list">
+      <h2>Repositorio de Ficheros</h2>
+      <ul id="blob-list">
+        <li>Cargando ficheros...</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 My Web App. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const storageAccountName = "embarba1990";
+    const containerName = "webstaticembarba";
+    const blobListElement = document.getElementById('blob-list');
+
+    async function loadBlobs() {
+      try {
+        const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "application/xml");
+        const blobs = xmlDoc.getElementsByTagName('Blob');
+
+        blobListElement.innerHTML = '';
+
+        if (blobs.length === 0) {
+          blobListElement.innerHTML = '<li>No hay ficheros disponibles.</li>';
+          return;
+        }
+
+        for (let blob of blobs) {
+          const name = blob.getElementsByTagName('Name')[0].textContent;
+          const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
+          
+          const li = document.createElement('li');
+          
+          const icon = document.createElement('span');
+          icon.textContent = "📄 ";
+
+          const link = document.createElement('a');
+          link.href = blobUrl;
+          link.textContent = name;
+          link.target = "_blank";
+
+          li.appendChild(icon);
+          li.appendChild(link);
+          blobListElement.appendChild(li);
+        }
+
+      } catch (error) {
+        console.error('Error al cargar blobs
