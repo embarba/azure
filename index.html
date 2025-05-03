@@ -147,6 +147,7 @@
           link.href = blobUrl;
           link.textContent = name;
           link.target = "_blank";
+          link.setAttribute('download', name);  // Añadido para forzar la descarga
 
           const downloadBtn = document.createElement('button');
           downloadBtn.textContent = "Descargar";
