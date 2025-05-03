@@ -6,14 +6,15 @@
   <title>Repositorio protegido</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      color: #333;
+      font-family: monospace;
+      background-color: black;
+      color: #00ff00;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      margin: 0;
     }
     input {
       padding: 0.5em;
@@ -28,6 +29,9 @@
       border: 1px solid #0f0;
       color: #0f0;
       cursor: pointer;
+    }
+    button:hover {
+      background-color: #0078d4;
     }
     #contenido {
       display: none;
@@ -44,6 +48,14 @@
     }
     .file-list li {
       margin: 1em 0;
+    }
+    .file-list a {
+      color: #00ff00;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .file-list a:hover {
+      color: #0078d4;
     }
     .file-list button {
       margin-left: 10px;
