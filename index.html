@@ -3,109 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Embarba1990 :: Izan y Elsa</title>
+  <title>Repositorio protegido</title>
   <style>
     body {
-      font-family: "Courier New", Courier, monospace;
-      background: #121212;
-      color: #33ff33;
-      margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       min-height: 100vh;
-      text-align: left;
     }
-    header {
-      background: #0d0d0d;
-      color: #33ff33;
-      width: 100%;
-      padding: 1em 2em;
-      border-bottom: 1px solid #33ff33;
+    input {
+      padding: 0.5em;
+      background: #111;
+      border: 1px solid #0f0;
+      color: #0f0;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.5em;
+    button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      background: #222;
+      border: 1px solid #0f0;
+      color: #0f0;
+      cursor: pointer;
     }
-    main {
-      width: 100%;
-      max-width: 800px;
-      padding: 2em;
-    }
-    h2 {
-      color: #00e0e0;
-      font-size: 1.2em;
-      border-bottom: 1px dashed #00e0e0;
-      padding-bottom: 0.3em;
-    }
-    p {
-      margin: 1em 0;
-      color: #cccccc;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 1em 0;
-    }
-    ul li {
-      margin: 0.5em 0;
-    }
-    ul li a {
-      color: #00ffff;
-      text-decoration: none;
-    }
-    ul li a:hover {
-      text-decoration: underline;
-      color: #ff4081;
+    #contenido {
+      display: none;
+      text-align: center;
     }
     .file-list {
       margin-top: 2em;
+      width: 90%;
+      max-width: 800px;
     }
-    .file-list ul li {
-      background: #1e1e1e;
-      padding: 0.5em;
-      border-left: 4px solid #33ff33;
-      margin-bottom: 0.5em;
-      overflow-wrap: break-word;
+    .file-list ul {
+      list-style: none;
+      padding: 0;
     }
-    footer {
-      margin-top: auto;
-      padding: 1em;
-      width: 100%;
-      background: #0d0d0d;
-      color: #666;
-      font-size: 0.8em;
-      text-align: center;
-      border-top: 1px solid #222;
+    .file-list li {
+      margin: 1em 0;
+    }
+    .file-list button {
+      margin-left: 10px;
+      background-color: #0078d4;
+      color: white;
+      padding: 0.5em 1em;
+      border: none;
+      cursor: pointer;
+    }
+    .file-list button:hover {
+      background-color: #005a99;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>[ Embarba1990 ] - Repositorio :: Izan y Elsa</h1>
-  </header>
-  <main>
-    <h2># Información</h2>
-    <p>Web personal ejecutándose sobre Azure App Service.</p>
-    <ul>
-      <li><a href="https://azure.microsoft.com/" target="_blank">Azure Oficial</a></li>
-      <li><a href="https://portal.azure.com/" target="_blank">Portal Azure</a></li>
-      <li><a href="https://github.com/" target="_blank">GitHub</a></li>
-      <li><a href="https://embarba1990.file.core.windows.net/repositorio?sp=r&st=2025-01-28T15:21:51Z&se=2025-01-29T15:21:51Z&spr=https&sv=2022-11-02&sig=KVD1aQ4vFNxXG5Fr425MbHRB42t8XJgdlzPeWpgNbYY%3D&sr=s" target="_blank">Repositorio SMB</a></li>
-    </ul>
+  <div id="login">
+    <h2>Acceso restringido</h2>
+    <input type="password" id="clave" placeholder="Clave de acceso" />
+    <br/>
+    <button onclick="verificar()">Entrar</button>
+  </div>
 
+  <div id="contenido">
+    <h1>Repositorio de Ficheros</h1>
     <div class="file-list">
-      <h2># Ficheros en Azure Blob</h2>
       <ul id="blob-list">
         <li>Cargando ficheros...</li>
       </ul>
     </div>
-  </main>
-  <footer>
-    <p>© 2025 Embarba1990. :: Terminal Web UI v4</p>
-  </footer>
+  </div>
 
   <script>
     const storageAccountName = "embarba1990";
@@ -136,11 +104,27 @@
           const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
           
           const li = document.createElement('li');
+          const icon = document.createElement('span');
+          icon.textContent = "📄 ";
+
           const link = document.createElement('a');
           link.href = blobUrl;
           link.textContent = name;
           link.target = "_blank";
+
+          const downloadBtn = document.createElement('button');
+          downloadBtn.textContent = "Descargar";
+          downloadBtn.onclick = () => window.location.href = blobUrl;
+
+          const shareBtn = document.createElement('button');
+          shareBtn.textContent = "Compartir";
+          shareBtn.onclick = () => navigator.clipboard.writeText(blobUrl).then(() => alert("Enlace copiado al portapapeles"));
+
+          li.appendChild(icon);
           li.appendChild(link);
+          li.appendChild(downloadBtn);
+          li.appendChild(shareBtn);
+
           blobListElement.appendChild(li);
         }
 
@@ -150,7 +134,16 @@
       }
     }
 
-    loadBlobs();
+    function verificar() {
+      const clave = document.getElementById("clave").value;
+      if (clave === "emb1990") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("contenido").style.display = "block";
+        loadBlobs();
+      } else {
+        alert("Clave incorrecta");
+      }
+    }
   </script>
 </body>
 </html>
