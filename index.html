@@ -1,186 +1,79 @@
-<!DOCTYPE html>
-<html lang="es">
+<!-- index.html - Web con estilo Walden --><!DOCTYPE html><html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Repositorio protegido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rincón de Embarba</title>
   <style>
     body {
-      font-family: monospace;
-      background-color: black;
-      color: #00ff00;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    input {
-      padding: 0.5em;
-      background: #111;
-      border: 1px solid #0f0;
-      color: #0f0;
-    }
-    button {
-      margin-top: 1em;
-      padding: 0.5em 1em;
-      background: #222;
-      border: 1px solid #0f0;
-      color: #0f0;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #0078d4;
-    }
-    #login {
-      text-align: center;
-    }
-    #contenido {
-      display: none;
-      text-align: center;
-    }
-    header {
-      margin-bottom: 2em;
-    }
-    h1 {
-      color: #00ff00;
-      font-size: 2em;
-    }
-    .file-list {
-      margin-top: 2em;
-      width: 90%;
+      font-family: serif;
+      background: #fdf6e3;
+      color: #333;
+      padding: 2rem;
       max-width: 800px;
+      margin: auto;
     }
-    .file-list ul {
-      list-style: none;
-      padding: 0;
-    }
-    .file-list li {
-      margin: 1em 0;
-    }
-    .file-list a {
-      color: #00ff00;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .file-list a:hover {
-      color: #0078d4;
-    }
-    .file-list button {
-      margin-left: 10px;
-      background-color: #0078d4;
+    h1 { color: #268bd2; }
+    button, input[type="submit"] {
+      background-color: #268bd2;
       color: white;
-      padding: 0.5em 1em;
+      padding: 0.5rem 1rem;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
-    .file-list button:hover {
-      background-color: #005a99;
+    input[type="file"] {
+      margin-bottom: 1rem;
     }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 0.5rem; }
+    a { color: #dc322f; text-decoration: none; }
   </style>
 </head>
 <body>
-  <div id="login">
-    <h2>Acceso restringido</h2>
-    <input type="password" id="clave" placeholder="Clave de acceso" />
-    <br/>
-    <button onclick="verificar()">Entrar</button>
-  </div>
-
-  <div id="contenido">
-    <header>
-      <h1>Repositorio Embarba1990 (v4)</h1>
-      <p>Izan y Elsa</p>
-      <p>Esta es una web gratuita en Azure App Service.</p>
-    </header>
-
-    <h2>Enlaces útiles</h2>
-    <ul>
-      <li><a href="https://azure.microsoft.com/" target="_blank">Aprende sobre Azure</a></li>
-      <li><a href="https://portal.azure.com/" target="_blank">Portal de Azure</a></li>
-      <li><a href="https://github.com/" target="_blank">Mi GitHub</a></li>
-      <li><a href="https://embarba1990.file.core.windows.net/repositorio?sp=r&st=2025-01-28T15:21:51Z&se=2025-01-29T15:21:51Z&spr=https&sv=2022-11-02&sig=KVD1aQ4vFNxXG5Fr425MbHRB42t8XJgdlzPeWpgNbYY%3D&sr=s" target="_blank">Mi Repositorio (File Share)</a></li>
-    </ul>
-
-    <div class="file-list">
-      <h2>Repositorio de Ficheros</h2>
-      <ul id="blob-list">
-        <li>Cargando ficheros...</li>
-      </ul>
-    </div>
-  </div>
-
-  <script>
-    const storageAccountName = "embarba1990";
-    const containerName = "webstaticembarba";
-    const blobListElement = document.getElementById('blob-list');
-
-    async function loadBlobs() {
-      try {
-        const url = `https://${storageAccountName}.blob.core.windows.net/${containerName}?restype=container&comp=list`;
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, "application/xml");
-        const blobs = xmlDoc.getElementsByTagName('Blob');
-
-        blobListElement.innerHTML = '';
-
-        if (blobs.length === 0) {
-          blobListElement.innerHTML = '<li>No hay ficheros disponibles.</li>';
-          return;
-        }
-
-        for (let blob of blobs) {
-          const name = blob.getElementsByTagName('Name')[0].textContent;
-          const blobUrl = `https://${storageAccountName}.blob.core.windows.net/${containerName}/${name}`;
-          
-          const li = document.createElement('li');
-          const icon = document.createElement('span');
-          icon.textContent = "📄 ";
-
-          const link = document.createElement('a');
-          link.href = blobUrl;
-          link.textContent = name;
-          link.target = "_blank";
-          link.setAttribute('download', name);  // Añadido para forzar la descarga
-
-          const downloadBtn = document.createElement('button');
-          downloadBtn.textContent = "Descargar";
-          downloadBtn.onclick = () => window.location.href = blobUrl;
-
-          const shareBtn = document.createElement('button');
-          shareBtn.textContent = "Compartir";
-          shareBtn.onclick = () => navigator.clipboard.writeText(blobUrl).then(() => alert("Enlace copiado al portapapeles"));
-
-          li.appendChild(icon);
-          li.appendChild(link);
-          li.appendChild(downloadBtn);
-          li.appendChild(shareBtn);
-
-          blobListElement.appendChild(li);
-        }
-
-      } catch (error) {
-        console.error('Error al cargar blobs:', error);
-        blobListElement.innerHTML = '<li>Error cargando ficheros. Revisa CORS o configuración del contenedor.</li>';
-      }
+  <h1>El rincón de Embarba</h1>  <h2>Subir archivos</h2>
+  <form id="uploadForm">
+    <input type="file" id="fileInput" name="files" multiple />
+    <input type="submit" value="Subir" />
+  </form>  <h2>Archivos disponibles</h2>
+  <form id="deleteForm">
+    <ul id="fileList"></ul>
+    <button type="submit">Eliminar seleccionados</button>
+  </form>  <script>
+    async function fetchFiles() {
+      const res = await fetch('/api/list');
+      const files = await res.json();
+      const fileList = document.getElementById('fileList');
+      fileList.innerHTML = '';
+      files.forEach(file => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <input type="checkbox" name="file" value="${file.id}" />
+          <a href="/api/download?id=${file.id}" target="_blank">${file.name}</a>
+        `;
+        fileList.appendChild(li);
+      });
     }
 
-    function verificar() {
-      const clave = document.getElementById("clave").value;
-      if (clave === "emb1990") {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("contenido").style.display = "block";
-        loadBlobs();
-      } else {
-        alert("Clave incorrecta");
-      }
-    }
-  </script>
-</body>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      const files = document.getElementById('fileInput').files;
+      for (let file of files) formData.append('files', file);
+      await fetch('/api/upload', { method: 'POST', body: formData });
+      fetchFiles();
+    });
+
+    document.getElementById('deleteForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const checked = [...document.querySelectorAll('input[name="file"]:checked')].map(i => i.value);
+      await fetch('/api/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: checked })
+      });
+      fetchFiles();
+    });
+
+    fetchFiles();
+  </script></body>
 </html>
