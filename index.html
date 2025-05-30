@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rincón de Embarba</title>
+  <title>Izalsa</title>
   <style>
     body {
       font-family: serif;
@@ -11,6 +11,7 @@
       padding: 2rem;
       max-width: 800px;
       margin: auto;
+      text-align: center;
     }
     h1 { color: #268bd2; }
     button, input[type="submit"] {
@@ -24,13 +25,19 @@
     input[type="file"] {
       margin-bottom: 1rem;
     }
-    ul { list-style: none; padding: 0; }
+    ul { list-style: none; padding: 0; text-align: left; }
     li { margin-bottom: 0.5rem; }
     a { color: #dc322f; text-decoration: none; }
+    img.logo {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 2rem;
+    }
   </style>
 </head>
 <body>
-  <h1>El rincón de Embarba</h1>  <h2>Subir archivos</h2>
+  <h1>Izalsa</h1>
+  <img src="https://drive.google.com/uc?export=view&id=1--_Ax8iP_eJDoBj5j8VTwo-pc91vvX_n" alt="Izalsa Logo" class="logo" />  <h2>Subir archivos</h2>
   <form id="uploadForm">
     <input type="file" id="fileInput" name="files" multiple />
     <input type="submit" value="Subir" />
